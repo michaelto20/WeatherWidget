@@ -1,4 +1,6 @@
-﻿@{
+﻿@model WeatherWidget.Models.Weather
+
+@{
     ViewBag.Title = "Weather Widget";
 }
 
@@ -7,13 +9,21 @@
     <p class="lead">See what the weather is like in your ZIP code!</p>
 </div>
 
-<div class="row">
-    <div class="col-md-offset-4 col-md-4">
-        <h2>Enter your ZIP code below to see the weather.</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
+<div class="container">
+    <div class="col-md-offset-3 col-md-8">
+        <h2>Enter your ZIP code to see the weather.</h2>
     </div>
+</div>
+<div class="container">
+    @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { id = "WeatherForm" }))
+    {
+        @Html.ValidationSummary(true);
+        
+        <div class="row col-md-offset-4 col-md-6">
+                <input type="submit" value="Get Weather" />
+                @Html.TextBoxFor(model => model.ZipCode)
+                @Html.ValidationMessageFor(model => model.ZipCode)
+        </div>
+    }
+        
 </div>

@@ -8,7 +8,14 @@ namespace WeatherWidget.Controllers
 {
     public class HomeController : Controller
     {
+        [HttpGet]
         public ActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Index(string zipCode)
         {
             return View();
         }
