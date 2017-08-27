@@ -9,17 +9,19 @@ using System.Web.Mvc;
 
 namespace WeatherWidget.Models
 {
-    public class WeathersController : Controller
+    // TODO: Uncomment when done testing
+    //[Authorize(Roles ="Administrator")]
+    public class WeatherController : Controller
     {
         private WeatherDbContext db = new WeatherDbContext();
 
-        // GET: Weathers
+        // GET: Weather
         public ActionResult Index()
         {
             return View(db.Weather.ToList());
         }
 
-        // GET: Weathers/Details/5
+        // GET: Weather/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -34,13 +36,13 @@ namespace WeatherWidget.Models
             return View(weather);
         }
 
-        // GET: Weathers/Create
+        // GET: Weather/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Weathers/Create
+        // POST: Weather/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -57,7 +59,7 @@ namespace WeatherWidget.Models
             return View(weather);
         }
 
-        // GET: Weathers/Edit/5
+        // GET: Weather/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -72,7 +74,7 @@ namespace WeatherWidget.Models
             return View(weather);
         }
 
-        // POST: Weathers/Edit/5
+        // POST: Weather/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -88,7 +90,7 @@ namespace WeatherWidget.Models
             return View(weather);
         }
 
-        // GET: Weathers/Delete/5
+        // GET: Weather/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -103,7 +105,7 @@ namespace WeatherWidget.Models
             return View(weather);
         }
 
-        // POST: Weathers/Delete/5
+        // POST: Weather/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

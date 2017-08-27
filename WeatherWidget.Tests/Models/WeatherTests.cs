@@ -9,33 +9,33 @@ using System.Threading.Tasks;
 namespace WeatherWidget.Models.Tests
 {
     [TestClass()]
-    public class WeatherDbContextTests
+    public class WeatherTests
     {
         [TestMethod()]
         public void ValidateZipTest()
         {
             // Test: Success
-            bool isValid = WeatherDbContext.ValidateZip("30909");
+            bool isValid = Weather.ValidateZip("30909");
             Assert.AreEqual(true,isValid);
 
             // Test: Fail - Too many numbers
-            isValid = WeatherDbContext.ValidateZip("309090");
+            isValid = Weather.ValidateZip("309090");
             Assert.AreEqual(false, isValid);
 
             // Test: Fail - Too few numbers
-            isValid = WeatherDbContext.ValidateZip("3090");
+            isValid = Weather.ValidateZip("3090");
             Assert.AreEqual(false, isValid);
 
             // Test: Fail - Leading extra character
-            isValid = WeatherDbContext.ValidateZip("m309090");
+            isValid = Weather.ValidateZip("m309090");
             Assert.AreEqual(false, isValid);
 
             // Test: Fail - Trailing extra character
-            isValid = WeatherDbContext.ValidateZip("309090a");
+            isValid = Weather.ValidateZip("309090a");
             Assert.AreEqual(false, isValid);
 
             // Test: Fail - Correct number of characters
-            isValid = WeatherDbContext.ValidateZip("seven");
+            isValid = Weather.ValidateZip("seven");
             Assert.AreEqual(false, isValid);
             
         }
