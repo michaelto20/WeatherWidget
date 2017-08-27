@@ -207,6 +207,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\WeatherDbContext.cs" />
+    <Compile Include="Models\WeathersController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\Weather.cs" />
     <Compile Include="Startup.cs" />
@@ -271,6 +272,11 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Weathers\Create.cshtml" />
+    <Content Include="Views\Weathers\Delete.cshtml" />
+    <Content Include="Views\Weathers\Details.cshtml" />
+    <Content Include="Views\Weathers\Edit.cshtml" />
+    <Content Include="Views\Weathers\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
