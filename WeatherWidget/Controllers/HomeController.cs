@@ -17,6 +17,7 @@ namespace WeatherWidget.Controllers
         [HttpPost]
         public ActionResult Index(string zipCode)
         {
+
             return View();
         }
 
