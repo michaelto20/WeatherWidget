@@ -3,3 +3,5 @@ packages/
 WeatherWidget/bin/
 WeatherWidget/obj/
 WeatherWidget/App_Data
+WeatherWidget.Tests/bin
+WeatherWidget.Tests/obj
