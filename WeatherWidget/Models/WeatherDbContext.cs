@@ -26,7 +26,7 @@ namespace WeatherWidget.Models
 
         private void InitializeDatabase()
         {
-            Database.SetInitializer(new DropCreateDatabaseAlways<WeatherDbContext>());
+            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<WeatherDbContext>());
             if (!Database.Exists())
             {
                 Database.Initialize(true);

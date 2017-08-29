@@ -9,8 +9,7 @@ using System.Web.Mvc;
 
 namespace WeatherWidget.Models
 {
-    // TODO: Uncomment when done testing
-    //[Authorize(Roles ="Administrator")]
+    [Authorize(Roles ="Administrator")]
     public class WeatherController : Controller
     {
         private WeatherDbContext db = new WeatherDbContext();

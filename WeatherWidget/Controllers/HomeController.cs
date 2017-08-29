@@ -1,10 +1,12 @@
-﻿using System.Data.SqlClient;
+﻿using System;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using WeatherWidget.Models;
 
 namespace WeatherWidget.Controllers
 {
+    // For logging purposes use Log4Net, configured in the Web.config
     public class HomeController : Controller
     {
 
@@ -19,26 +21,35 @@ namespace WeatherWidget.Controllers
         {
 
             Weather weather = null;
-            zipCode = zipCode.ToLower().Trim();
-            int zip;
-
+            
             if (ModelState.IsValid) {
                 if (Weather.ValidateZip(zipCode))
                 {
-                    // We know zip will parse because of ValidateZip()
-                    int.TryParse(zipCode, out zip); 
+                    try
+                    {
+                        zipCode = zipCode.ToLower().Trim();
+                        int zip;
+                        Weather.GetWeatherForZip(zipCode);
+                        // We know zip will parse because of ValidateZip()
+                        int.TryParse(zipCode, out zip);
 
-                    // Get weather data for the given zip code
-                    using(WeatherDbContext db = new WeatherDbContext())
-                    {
-                        // Find weather with zip code using parameters
-                        string query = "SELECT * FROM Weathers WHERE ZipCode = @zipCode";
-                        SqlParameter zipParameter = new SqlParameter("@zipCode", zip);
-                        weather = await db.Database.SqlQuery<Weather>(query, zipParameter).FirstOrDefaultAsync();
+                        // Get weather data for the given zip code
+                        using (WeatherDbContext db = new WeatherDbContext())
+                        {
+                            // Find weather with zip code using parameters
+                            string query = "SELECT * FROM Weathers WHERE ZipCode = @zipCode";
+                            SqlParameter zipParameter = new SqlParameter("@zipCode", zip);
+                            weather = await db.Database.SqlQuery<Weather>(query, zipParameter).FirstOrDefaultAsync();
+                        }
+                        if (weather == null)
+                        {
+                            ViewBag.ZipNotFound = "Sorry, we do not have weather information for that zip code.";
+                        }
                     }
-                    if(weather == null)
+                    catch(Exception ex)
                     {
-                        ViewBag.ZipNotFound = "Sorry, we do not have weather information for that zip code.";
+                        // log exception
+
                     }
                 }
                 else
@@ -55,16 +66,18 @@ namespace WeatherWidget.Controllers
         
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "A webpage to find the area for a zip code.  This is part of a skills test for TaxSlayer.";
 
             return View();
         }
         
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Feel free to contact me.";
 
             return View();
         }
+
+        
     }
 }

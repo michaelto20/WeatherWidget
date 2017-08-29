@@ -1,9 +1,14 @@
-﻿using System;
+﻿using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Text;
+using System.Net;
 using System.Text.RegularExpressions;
+using System.Runtime.Serialization.Json;
+using WeatherWidget.Models.API;
+using System;
 
 namespace WeatherWidget.Models
 {
@@ -28,8 +33,9 @@ namespace WeatherWidget.Models
 
         }
 
-        public Weather(double PrecipitationChance, int Temperature, string Description)
+        public Weather(int ZipCode, double PrecipitationChance, int Temperature, string Description)
         {
+            this.ZipCode = ZipCode;
             this.PrecipitationChance = PrecipitationChance;
             this.Temperature = Temperature;
             this.Description = Description;
@@ -58,5 +64,34 @@ namespace WeatherWidget.Models
 
             return isValid;
         }
+
+        public static Weather GetWeatherForZip(string zip)
+        {
+            Weather weather = null;
+            int zipCode;
+            try
+            {
+                // API key can be used only 1 every 10 minutes
+                string url = "http://api.openweathermap.org/data/2.5/weather?APPID=256bcf3e5fd68d3261de80f09fe147c6&units=imperial&zip=" + zip;
+                var synClient = new WebClient();
+                var content = synClient.DownloadString(url);
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(WeatherAPI));
+                using (var ms = new MemoryStream(Encoding.Unicode.GetBytes(content)))
+                {
+                    var weatherData = (WeatherAPI)serializer.ReadObject(ms);
+
+                    // Parse data from API object to store in DB
+                    // TODO: Modify DB to accompany new datatypes from WeatherAPI
+                    int.TryParse(zip, out zipCode);
+                    weather = new Weather(zipCode, 10, (int)weatherData.main.temp, weatherData.weather[0].description);
+                }
+            }
+            catch(Exception ex)
+            {
+
+            }
+            return weather;
+        }
+        
     }
 }

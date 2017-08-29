@@ -3,6 +3,7 @@ namespace WeatherWidget.Migrations
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using System.Data.Entity.Migrations;
+    using System.Collections.Generic;
     using WeatherWidget.Models;
 
     internal sealed class Configuration : DbMigrationsConfiguration<WeatherWidget.Models.WeatherDbContext>
@@ -19,10 +20,10 @@ namespace WeatherWidget.Migrations
             var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
 
             // Create admin role if not already in database
-            if (!roleManager.RoleExists("Admin"))
+            if (!roleManager.RoleExists("Administrator"))
             {
                 var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
-                role.Name = "Admin";
+                role.Name = "Administrator";
                 roleManager.Create(role);
 
 
@@ -30,32 +31,33 @@ namespace WeatherWidget.Migrations
                 user.UserName = "Administrator@gmail.com";
                 user.Email = "admin@gmail.com";
 
-                string userPassword = "Password!1";
+                string userPassword = "Password1!";
 
                 var chkUser = UserManager.Create(user, userPassword);
 
                 //Add default User to Role Admin   
                 if (chkUser.Succeeded)
                 {
-                    var result1 = UserManager.AddToRole(user.Id, "Admin");
+                    var result1 = UserManager.AddToRole(user.Id, "Administrator");
 
                 }
             }
 
             context.SaveChanges();
 
-            //  This method will be called after migrating to the latest version.
-
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
+            // Seed database with current weather information
+            // Get current data for each zip code from weather API and 
+            // save it to the DB
+            List<string> zips = new List<string>() { "30909", "30907", "30809" };
+            WeatherDbContext db = new WeatherDbContext();
+            foreach (string zip in zips)
+            {
+                Weather weather = Weather.GetWeatherForZip(zip);
+                db.Weather.Add(weather);
+                db.SaveChanges();
+            }
+            
         }
+    
     }
 }
