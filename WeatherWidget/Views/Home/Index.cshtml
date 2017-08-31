@@ -6,26 +6,27 @@
 
 <div class="jumbotron">
     <h1>Weather Widget</h1>
-    <p class="lead">See what the weather is like in your ZIP code!</p>
+    <h3 class="lead">See what the weather is like in your ZIP code!</h3>
 </div>
 
-<div class="container">
-    <div class="col-md-offset-3 col-md-8">
+<div class="container weatherHeader" >
+    <div class="col-md-offset-2 col-md-8 ">
         <h2>Enter your ZIP code to see the weather.</h2>
     </div>
-</div>
-<div class="container">
+
     @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { id = "WeatherForm" }))
     {
         @Html.ValidationSummary(true);
 
-        <div class="row col-md-offset-4 col-md-6">
+        <div class="row col-md-offset-4 col-md-4">
             <input type="submit" value="Get Weather" />
             @Html.TextBoxFor(model => model.ZipCode)
             @Html.ValidationMessageFor(model => model.ZipCode)
         </div>
+        
     }
 </div>
+
 <br />
 
 @if (!String.IsNullOrWhiteSpace(ViewBag.ZipNotFound))
@@ -39,17 +40,15 @@
 
 @if(Model != null)
 {
-    <div class="container">
-        <div class="col-md-offset-5 col-md-4">
-            <div class="row">
-                Temperature: @Model.Temperature
+    <div class="container weatherInfo col-md-offset-1">
+            <div class="weatherItem" id="temperatureInfo">
+                <h4>Temperature: @Model.Temperature</h4>
             </div>
-            <div class="row">
-                Chance of Precipitation: @Model.PrecipitationChance
+            <div class="weatherItem" id="precipitationInfo">
+                <h4>Chance of Precipitation: @Model.PrecipitationChance</h4>
             </div>
-            <div class="row">
-                Description: @Model.Description
+            <div class="weatherItem" id="descriptionInfo">
+                <h4>Description: @Model.Description</h4>
             </div>
-        </div>
     </div>
 }
